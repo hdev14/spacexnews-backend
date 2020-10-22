@@ -1,8 +1,8 @@
 import { MongoClient, Db, Collection } from 'mongodb'
 
 class Mongo {
-  private client: MongoClient | null = null
-  private db: Db | null = null
+  private client: MongoClient
+  private db: Db
 
   public async connect (uri: string): Promise<void> {
     this.client = await MongoClient.connect(uri, {
@@ -13,18 +13,12 @@ class Mongo {
     this.db = this.client.db()
   }
 
-  public getCollection (name: string): Collection | null {
-    if (this.db) {
-      return this.db.collection(name)
-    }
-
-    return null
+  public getCollection (name: string): Collection {
+    return this.db.collection(name)
   }
 
   public async disconnect (): Promise<void> {
-    if (this.client) {
-      await this.client.close()
-    }
+    await this.client.close()
   }
 }
 

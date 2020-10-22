@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import Mongo from '../database/Mongo'
 import path from 'path'
 import fs from 'fs'
 
@@ -6,23 +7,16 @@ import notfoundError from '../helpers/notfound-error'
 
 class UserController {
   public async index (req: Request, res: Response) {
-    // const users = await getRepository(User).find({
-    //   select: ['id', 'name', 'email']
-    // })
-    // return res.json(users)
+    const userCollection = Mongo.getCollection('users')
+    const users = await userCollection.find({}).toArray()
+    return res.status(200).json(users)
   }
 
   public async create (req: Request, res: Response) {
-    // const repository = getRepository(User)
-
-    // const userExists = await repository.findOne({ where: { email: req.body.email } })
-    // if (userExists) {
-    //   return res.status(400).json({ error: 'Email already exists' })
-    // }
-
-    // const user = repository.create(req.body)
-    // const createdUser = await repository.save(user)
-    // return res.status(201).json(createdUser)
+    const data = req.body
+    const usersCollection = Mongo.getCollection('users')
+    const newUser = (await usersCollection?.insertOne(data)).ops[0]
+    return res.status(201).json(newUser)
   }
 
   public async update (req: Request, res: Response) {
@@ -35,6 +29,16 @@ class UserController {
     // } catch (err) {
     //   return notfoundError(err)
     // }
+    const data = req.body
+    const { id } = req.params
+    const userCollection = Mongo.getCollection('users')
+
+    try {
+      const { result } = await userCollection.updateOne({ _id: id }, { $set: data })
+      return result.ok && res.status(200).json()
+    } catch (err) {
+      return res.status(400).json()
+    }
   }
 
   public async updatePhoto (req: Request, res: Response) {
@@ -61,14 +65,10 @@ class UserController {
   }
 
   public async delete (req: Request, res: Response) {
-    // try {
-    //   const repository = getRepository(User)
-    //   const user = await repository.findOneOrFail(req.params.id)
-    //   await repository.delete(user.id)
-    //   return res.status(204).json()
-    // } catch (err) {
-    //   return notfoundError(err)
-    // }
+    const { id } = req.params
+    const userCollection = Mongo.getCollection('users')
+    const { result } = await userCollection.deleteOne({ _id: id })
+    return result.ok && res.status(200).json()
   }
 }
 

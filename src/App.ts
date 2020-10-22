@@ -3,8 +3,6 @@ import cors from 'cors'
 
 import routes from './routes'
 
-// Global Middlewares
-import time from './middlewares/time'
 import globalErrorHandler from './middlewares/global-error-handler'
 
 class App {
@@ -20,7 +18,6 @@ class App {
   private globalMiddlewares () {
     this.server.use(express.json())
     this.server.use(cors())
-    this.server.use(time)
   }
 
   private routes () {
