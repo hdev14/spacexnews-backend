@@ -15,7 +15,7 @@ const userController = new UserController()
 
 router.post('/users', UserValidator.create, userController.create)
 router.get('/users', userController.index)
-router.put('/users/:id', userController.update)
+router.put('/users/:id', UserValidator.update, userController.update)
 router.delete('/users/:id', userController.delete)
 
 const upload = multer({ storage: multerStorageConfig })

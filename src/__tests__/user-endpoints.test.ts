@@ -117,11 +117,33 @@ describe('UserController ingrated tests', () => {
   })
 
   it('on POST should return 400 if email is invalid', async () => {
-    const dataWithInvalidName = {
+    const dataWithInvalidEmail = {
       name: 'test user',
       email: 'invalidemail.com'
     }
-    const response = await server.post('/users').send(dataWithInvalidName)
+    const response = await server.post('/users').send(dataWithInvalidEmail)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
+
+  it('on PUT should return 400 if name is invalid', async () => {
+    const fakeId = 14
+    const dataWithInvalidName = {
+      name: 123,
+      email: 'test@email.com'
+    }
+    const response = await server.put(`/users/${fakeId}`).send(dataWithInvalidName)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
+
+  it('on PUT should return 400 if email is invalid', async () => {
+    const fakeId = 14
+    const dataWithInvalidEmail = {
+      name: 'test user',
+      email: 'invalidemail.com'
+    }
+    const response = await server.put(`/users/${fakeId}`).send(dataWithInvalidEmail)
     expect(response.status).toBe(400)
     expect(response.body.error).toBeTruthy()
   })
