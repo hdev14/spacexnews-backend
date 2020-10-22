@@ -9,3 +9,5 @@ tmp/*
 !tmp/.gitkeep
 
 *.log
+
+globalConfig.json

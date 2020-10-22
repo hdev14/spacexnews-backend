@@ -87,4 +87,42 @@ describe('UserController ingrated tests', () => {
     const response = await server.delete(`/users/${user._id}`)
     expect(response.status).toBe(200)
   })
+
+  it('on POST should return 400 if name is not passed', async () => {
+    const dataWithoutName = {
+      email: 'test@email.com'
+    }
+    const response = await server.post('/users').send(dataWithoutName)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
+
+  it('on POST should return 400 if email is not passed', async () => {
+    const dataWithoutEmail = {
+      name: 'test user'
+    }
+    const response = await server.post('/users').send(dataWithoutEmail)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
+
+  it('on POST should return 400 if name is invalid', async () => {
+    const dataWithInvalidName = {
+      name: 123,
+      email: 'test@email.com'
+    }
+    const response = await server.post('/users').send(dataWithInvalidName)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
+
+  it('on POST should return 400 if email is invalid', async () => {
+    const dataWithInvalidName = {
+      name: 'test user',
+      email: 'invalidemail.com'
+    }
+    const response = await server.post('/users').send(dataWithInvalidName)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
 })

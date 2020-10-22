@@ -6,8 +6,7 @@ class UserValidator {
     try {
       const schema = object().shape({
         name: string().required(),
-        email: string().email().required(),
-        password: string().min(6).required()
+        email: string().email().required()
       })
 
       await schema.validate(req.body, { strict: true })
