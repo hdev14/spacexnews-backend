@@ -1,0 +1,11 @@
+node_modules
+dist
+.vscode
+.env
+
+ormconfig.json
+
+tmp/*
+!tmp/.gitkeep
+
+*.log
