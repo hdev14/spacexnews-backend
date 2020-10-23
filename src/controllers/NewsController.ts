@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { ObjectID } from 'mongodb'
 import Mongo from '../database/Mongo'
 
 class NewsController {
@@ -11,7 +12,7 @@ class NewsController {
 
   public async create (req: Request, res: Response) {
     const newsCollection = Mongo.getCollection('news')
-    const newNews = (await newsCollection?.insertOne(req.body)).ops[0]
+    const newNews = (await newsCollection?.insertOne({ ...req.body, createdAt: new Date() })).ops[0]
 
     return res.status(201).json(newNews)
   }
@@ -22,7 +23,7 @@ class NewsController {
 
     try {
       const newsCollection = Mongo.getCollection('news')
-      const { result } = await newsCollection.updateOne({ _id: id }, { $set: data })
+      const { result } = await newsCollection.updateOne({ _id: new ObjectID(id) }, { $set: data })
 
       return result.ok && res.status(200).json()
     } catch (err) {
@@ -33,7 +34,7 @@ class NewsController {
   public async delete (req: Request, res: Response) {
     const { id } = req.params
     const newsCollection = Mongo.getCollection('news')
-    const { result } = await newsCollection.deleteOne({ _id: id })
+    const { result } = await newsCollection.deleteOne({ _id: new ObjectID(id) })
 
     return result.ok && res.status(200).json()
   }

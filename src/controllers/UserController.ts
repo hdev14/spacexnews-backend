@@ -38,7 +38,7 @@ class UserController {
   public async delete (req: Request, res: Response) {
     const { id } = req.params
     const userCollection = Mongo.getCollection('users')
-    const { result } = await userCollection.deleteOne({ _id: id })
+    const { result } = await userCollection.deleteOne({ _id: new ObjectID(id) })
 
     return result.ok && res.status(200).json()
   }
