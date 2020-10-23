@@ -142,6 +142,7 @@ describe('UserController ingrated tests', () => {
     const dataWithInvalidContent = {
       title: 'test title',
       content: 123
+
     }
     const response = await server.put(`/news/${fakeId}`).send(dataWithInvalidContent)
     expect(response.status).toBe(400)
