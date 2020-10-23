@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { ObjectID } from 'mongodb'
 import Mongo from '../database/Mongo'
 
 class UserController {
@@ -22,7 +23,11 @@ class UserController {
 
     try {
       const userCollection = Mongo.getCollection('users')
-      const { result } = await userCollection.updateOne({ _id: id }, { $set: data })
+      const { result } = await userCollection.updateOne(
+        { _id: new ObjectID(id) },
+        { $set: data },
+        { upsert: false }
+      )
 
       return result.ok && res.status(200).json()
     } catch (err) {
