@@ -66,7 +66,7 @@ describe('UserController ingrated tests', () => {
     expect(response.status).toBe(200)
   })
 
-  it('should return 400 if no data is passed', async () => {
+  it('on PUT:/users should return 400 if no data is passed', async () => {
     const userCollection = await Mongo.getCollection('users')
     const user = (await userCollection.insertOne({
       name: 'test user',
@@ -88,7 +88,7 @@ describe('UserController ingrated tests', () => {
     expect(response.status).toBe(200)
   })
 
-  it('on POST should return 400 if name is not passed', async () => {
+  it('on POST:/users should return 400 if name is not passed', async () => {
     const dataWithoutName = {
       email: 'test@email.com'
     }
@@ -97,7 +97,7 @@ describe('UserController ingrated tests', () => {
     expect(response.body.error).toBeTruthy()
   })
 
-  it('on POST should return 400 if email is not passed', async () => {
+  it('on POST:/users should return 400 if email is not passed', async () => {
     const dataWithoutEmail = {
       name: 'test user'
     }
@@ -106,7 +106,7 @@ describe('UserController ingrated tests', () => {
     expect(response.body.error).toBeTruthy()
   })
 
-  it('on POST should return 400 if name is invalid', async () => {
+  it('on POST:/users should return 400 if name is invalid', async () => {
     const dataWithInvalidName = {
       name: 123,
       email: 'test@email.com'
@@ -116,7 +116,7 @@ describe('UserController ingrated tests', () => {
     expect(response.body.error).toBeTruthy()
   })
 
-  it('on POST should return 400 if email is invalid', async () => {
+  it('on POST:/users should return 400 if email is invalid', async () => {
     const dataWithInvalidEmail = {
       name: 'test user',
       email: 'invalidemail.com'
@@ -126,7 +126,7 @@ describe('UserController ingrated tests', () => {
     expect(response.body.error).toBeTruthy()
   })
 
-  it('on PUT should return 400 if name is invalid', async () => {
+  it('on PUT:/users should return 400 if name is invalid', async () => {
     const fakeId = 14
     const dataWithInvalidName = {
       name: 123,
@@ -137,7 +137,7 @@ describe('UserController ingrated tests', () => {
     expect(response.body.error).toBeTruthy()
   })
 
-  it('on PUT should return 400 if email is invalid', async () => {
+  it('on PUT:/users should return 400 if email is invalid', async () => {
     const fakeId = 14
     const dataWithInvalidEmail = {
       name: 'test user',
