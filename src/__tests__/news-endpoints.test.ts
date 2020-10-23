@@ -22,7 +22,8 @@ describe('UserController ingrated tests', () => {
     const data = {
       title: 'test title',
       content: 'test content',
-      authorID: 'testID'
+      authorID: 'testID',
+      image: 'http://test.com/test'
     }
 
     const response = await server.post('/news').send(data)
@@ -35,17 +36,20 @@ describe('UserController ingrated tests', () => {
       {
         title: 'test title 1',
         content: 'test content 1',
-        authorID: 'testID'
+        authorID: 'testID',
+        image: 'http://test.com/test'
       },
       {
         title: 'test title 2',
         content: 'test content 2',
-        authorID: 'testID'
+        authorID: 'testID',
+        image: 'http://test.com/test'
       },
       {
         title: 'test title 3',
         content: 'test content 3',
-        authorID: 'testID'
+        authorID: 'testID',
+        image: 'http://test.com/test'
       }
     ])
 
@@ -59,7 +63,8 @@ describe('UserController ingrated tests', () => {
     const news = (await newsCollection.insertOne({
       title: 'test title',
       content: 'test content',
-      authorID: 'testID'
+      authorID: 'testID',
+      image: 'http://test.com/test'
     })).ops[0]
 
     const dataWithTitle = { title: 'test title updated' }
@@ -69,17 +74,15 @@ describe('UserController ingrated tests', () => {
     const dataWithContent = { content: 'test content updated' }
     response = await server.put(`/news/${news._id}`).send(dataWithContent)
     expect(response.status).toBe(200)
+
+    const dataWithImage = { image: 'http://test.com/updated' }
+    response = await server.put(`/news/${news._id}`).send(dataWithContent)
+    expect(response.status).toBe(200)
   })
 
   it('on PUT:/news should return 400 if no data is passed', async () => {
-    const newsCollection = await Mongo.getCollection('users')
-    const news = (await newsCollection.insertOne({
-      title: 'test title',
-      content: 'test content',
-      authorID: 'testID'
-    })).ops[0]
-
-    const response = await server.put(`/users/${news._id}`).send({})
+    const fakeId = 10
+    const response = await server.put(`/users/${fakeId}`).send({})
     expect(response.status).toBe(400)
   })
 
@@ -88,7 +91,8 @@ describe('UserController ingrated tests', () => {
     const news = (await newsCollection.insertOne({
       title: 'test title',
       content: 'test content',
-      authorID: 'testID'
+      authorID: 'testID',
+      image: 'http://test.com/test'
     })).ops[0]
 
     const response = await server.delete(`/news/${news._id}`)
@@ -97,7 +101,9 @@ describe('UserController ingrated tests', () => {
 
   it('on POST:/news should return 400 if title is not passed', async () => {
     const dataWithoutTitle = {
-      content: 'test content'
+      content: 'test content',
+      authorID: 'testID',
+      image: 'http://test.com/test'
     }
     const response = await server.post('/news').send(dataWithoutTitle)
     expect(response.status).toBe(400)
@@ -106,7 +112,9 @@ describe('UserController ingrated tests', () => {
 
   it('on POST:/news should return 400 if content is not passed', async () => {
     const dataWithoutContent = {
-      title: 'test title'
+      title: 'test title',
+      authorID: 'testID',
+      image: 'http://test.com/test'
     }
     const response = await server.post('/news').send(dataWithoutContent)
     expect(response.status).toBe(400)
@@ -117,7 +125,8 @@ describe('UserController ingrated tests', () => {
     const dataWithInvalidTitle = {
       title: 123,
       content: 'test content',
-      authorID: 'testID'
+      authorID: 'testID',
+      image: 'http://test.com/test'
     }
     const response = await server.post('/news').send(dataWithInvalidTitle)
     expect(response.status).toBe(400)
@@ -128,7 +137,8 @@ describe('UserController ingrated tests', () => {
     const dataWithInvalidContent = {
       title: 'test title',
       content: 123,
-      authorID: 'testID'
+      authorID: 'testID',
+      image: 'http://test.com/test'
     }
     const response = await server.post('/news').send(dataWithInvalidContent)
     expect(response.status).toBe(400)
@@ -139,7 +149,8 @@ describe('UserController ingrated tests', () => {
     const dataWithInvalidAuthorID = {
       title: 'test title',
       content: 'test content',
-      authorID: 123
+      authorID: 123,
+      image: 'http://test.com/test'
     }
     const response = await server.post('/news').send(dataWithInvalidAuthorID)
     expect(response.status).toBe(400)
@@ -149,9 +160,43 @@ describe('UserController ingrated tests', () => {
   it('on POST:/news should return 400 if authorID is not passed', async () => {
     const dataWithoutAuthorID = {
       title: 'test title',
-      content: 'test content'
+      content: 'test content',
+      image: 'http://test.com/test'
     }
     const response = await server.post('/news').send(dataWithoutAuthorID)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
+
+  it('Image should be an URL', async () => {
+    const dataWithInvalidImage = {
+      title: 'test title',
+      content: 'test content',
+      authorID: 'testID',
+      image: 'test'
+    }
+    let response = await server.post('/news').send(dataWithInvalidImage)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+
+    const dataWithValidImage = {
+      title: 'test title',
+      content: 'test content',
+      authorID: 'testID',
+      image: 'http://test.com/test'
+    }
+
+    response = await server.post('/news').send(dataWithValidImage)
+    expect(response.status).toBe(201)
+  })
+
+  it('on POST:/news should return 400 if image url is not passed', async () => {
+    const dataWithoutImage = {
+      title: 'test title',
+      content: 'test content',
+      authorID: 'testID'
+    }
+    const response = await server.post('/news').send(dataWithoutImage)
     expect(response.status).toBe(400)
     expect(response.body.error).toBeTruthy()
   })

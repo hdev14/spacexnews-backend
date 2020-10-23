@@ -1,4 +1,4 @@
-import { object, string, date } from 'yup'
+import { object, string } from 'yup'
 import { Request, Response, NextFunction } from 'express'
 
 class NewsValidator {
@@ -7,7 +7,8 @@ class NewsValidator {
       const schema = object().shape({
         title: string().required(),
         content: string().required(),
-        authorID: string().required()
+        authorID: string().required(),
+        image: string().url().required()
       })
 
       await schema.validate(req.body, { strict: true })
