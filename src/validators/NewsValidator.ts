@@ -6,7 +6,8 @@ class NewsValidator {
     try {
       const schema = object().shape({
         title: string().required(),
-        content: string().required()
+        content: string().required(),
+        authorID: string().required()
       })
 
       await schema.validate(req.body, { strict: true })

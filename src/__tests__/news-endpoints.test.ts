@@ -21,7 +21,8 @@ describe('UserController ingrated tests', () => {
   it('should create an news', async () => {
     const data = {
       title: 'test title',
-      content: 'test content'
+      content: 'test content',
+      authorID: 'testID'
     }
 
     const response = await server.post('/news').send(data)
@@ -33,15 +34,18 @@ describe('UserController ingrated tests', () => {
     await newsCollection.insertMany([
       {
         title: 'test title 1',
-        content: 'test content 1'
+        content: 'test content 1',
+        authorID: 'testID'
       },
       {
         title: 'test title 2',
-        content: 'test content 2'
+        content: 'test content 2',
+        authorID: 'testID'
       },
       {
         title: 'test title 3',
-        content: 'test content 3'
+        content: 'test content 3',
+        authorID: 'testID'
       }
     ])
 
@@ -54,7 +58,8 @@ describe('UserController ingrated tests', () => {
     const newsCollection = await Mongo.getCollection('news')
     const news = (await newsCollection.insertOne({
       title: 'test title',
-      content: 'test content'
+      content: 'test content',
+      authorID: 'testID'
     })).ops[0]
 
     const dataWithTitle = { title: 'test title updated' }
@@ -70,7 +75,8 @@ describe('UserController ingrated tests', () => {
     const newsCollection = await Mongo.getCollection('users')
     const news = (await newsCollection.insertOne({
       title: 'test title',
-      content: 'test content'
+      content: 'test content',
+      authorID: 'testID'
     })).ops[0]
 
     const response = await server.put(`/users/${news._id}`).send({})
@@ -81,7 +87,8 @@ describe('UserController ingrated tests', () => {
     const newsCollection = await Mongo.getCollection('news')
     const news = (await newsCollection.insertOne({
       title: 'test title',
-      content: 'test content'
+      content: 'test content',
+      authorID: 'testID'
     })).ops[0]
 
     const response = await server.delete(`/news/${news._id}`)
@@ -109,19 +116,42 @@ describe('UserController ingrated tests', () => {
   it('on POST:/news should return 400 if title is invalid', async () => {
     const dataWithInvalidTitle = {
       title: 123,
-      content: 'test content'
+      content: 'test content',
+      authorID: 'testID'
     }
     const response = await server.post('/news').send(dataWithInvalidTitle)
     expect(response.status).toBe(400)
     expect(response.body.error).toBeTruthy()
   })
 
-  it('on POST:/news should return 400 if title is invalid', async () => {
+  it('on POST:/news should return 400 if content is invalid', async () => {
     const dataWithInvalidContent = {
       title: 'test title',
-      content: 123
+      content: 123,
+      authorID: 'testID'
     }
     const response = await server.post('/news').send(dataWithInvalidContent)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
+
+  it('on POST:/news should return 400 if authorID is invalid', async () => {
+    const dataWithInvalidAuthorID = {
+      title: 'test title',
+      content: 'test content',
+      authorID: 123
+    }
+    const response = await server.post('/news').send(dataWithInvalidAuthorID)
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBeTruthy()
+  })
+
+  it('on POST:/news should return 400 if authorID is not passed', async () => {
+    const dataWithoutAuthorID = {
+      title: 'test title',
+      content: 'test content'
+    }
+    const response = await server.post('/news').send(dataWithoutAuthorID)
     expect(response.status).toBe(400)
     expect(response.body.error).toBeTruthy()
   })

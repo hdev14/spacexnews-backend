@@ -13,6 +13,7 @@ class UserController {
   public async show (req: Request, res: Response) {
     const userCollection = Mongo.getCollection('users')
     const user = await userCollection.findOne({ _id: new ObjectID(req.params.id) })
+
     return res.status(200).json(user)
   }
 
