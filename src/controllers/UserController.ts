@@ -10,6 +10,12 @@ class UserController {
     return res.status(200).json(users)
   }
 
+  public async show (req: Request, res: Response) {
+    const userCollection = Mongo.getCollection('users')
+    const user = await userCollection.findOne({ _id: new ObjectID(req.params.id) })
+    return res.status(200).json(user)
+  }
+
   public async create (req: Request, res: Response) {
     const usersCollection = Mongo.getCollection('users')
     const newUser = (await usersCollection?.insertOne(req.body)).ops[0]

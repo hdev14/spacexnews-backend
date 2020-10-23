@@ -12,6 +12,7 @@ const router = Router()
 
 router.post('/users', UserValidator.create, UserController.create)
 router.get('/users', UserController.index)
+router.get('/users/:id', UserController.show)
 router.put('/users/:id', UserValidator.update, UserController.update)
 router.delete('/users/:id', UserController.delete)
 

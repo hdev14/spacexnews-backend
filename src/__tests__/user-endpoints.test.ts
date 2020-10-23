@@ -50,6 +50,19 @@ describe('UserController ingrated tests', () => {
     expect(response.body).toHaveLength(3)
   })
 
+  it('should return an user', async () => {
+    const userCollection = await Mongo.getCollection('users')
+    const user = (await userCollection.insertOne({
+      name: 'test user',
+      email: 'test@email.com'
+    })).ops[0]
+
+    const response = await server.get(`/users/${user._id}`)
+    expect(response.status).toBe(200)
+    expect(response.body.name).toEqual(user.name)
+    expect(response.body.email).toEqual(user.email)
+  })
+
   it('should update user', async () => {
     const userCollection = await Mongo.getCollection('users')
     const user = (await userCollection.insertOne({
