@@ -1,9 +1,5 @@
 import { Request, Response } from 'express'
 import Mongo from '../database/Mongo'
-import path from 'path'
-import fs from 'fs'
-
-import notfoundError from '../helpers/notfound-error'
 
 class UserController {
   public async index (req: Request, res: Response) {
