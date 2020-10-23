@@ -21,14 +21,14 @@ class NewsController {
     const data = req.body
     const { id } = req.params
 
-    try {
-      const newsCollection = Mongo.getCollection('news')
-      const { result } = await newsCollection.updateOne({ _id: new ObjectID(id) }, { $set: data })
-
-      return result.ok && res.status(200).json()
-    } catch (err) {
+    if (!(data.title || data.content)) {
       return res.status(400).json()
     }
+
+    const newsCollection = Mongo.getCollection('news')
+    const { result } = await newsCollection.updateOne({ _id: new ObjectID(id) }, { $set: data })
+
+    return result.ok && res.status(200).json()
   }
 
   public async delete (req: Request, res: Response) {
