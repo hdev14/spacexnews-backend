@@ -28,18 +28,18 @@ class UserController {
     const data = req.body
     const { id } = req.params
 
-    try {
-      const userCollection = Mongo.getCollection('users')
-      const { result } = await userCollection.updateOne(
-        { _id: new ObjectID(id) },
-        { $set: data },
-        { upsert: false }
-      )
-
-      return result.ok && res.status(200).json()
-    } catch (err) {
+    if (!(data.name || data.email)) {
       return res.status(400).json()
     }
+
+    const userCollection = Mongo.getCollection('users')
+    const { result } = await userCollection.updateOne(
+      { _id: new ObjectID(id) },
+      { $set: data },
+      { upsert: false }
+    )
+
+    return result.ok && res.status(200).json()
   }
 
   public async delete (req: Request, res: Response) {
