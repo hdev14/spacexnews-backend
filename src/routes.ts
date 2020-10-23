@@ -18,6 +18,7 @@ router.delete('/users/:id', UserController.delete)
 
 router.post('/news', NewsValidator.create, NewsController.create)
 router.get('/news', NewsController.index)
+router.get('/news/:id', NewsController.show)
 router.put('/news/:id', NewsValidator.update, NewsController.update)
 router.delete('/news/:id', NewsController.delete)
 

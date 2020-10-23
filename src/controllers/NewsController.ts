@@ -10,6 +10,13 @@ class NewsController {
     return res.status(200).json(news)
   }
 
+  public async show (req: Request, res: Response) {
+    const newsCollection = Mongo.getCollection('news')
+    const news = await newsCollection.findOne({ _id: new ObjectID(req.params.id) })
+
+    return res.status(200).json(news)
+  }
+
   public async create (req: Request, res: Response) {
     const newsCollection = Mongo.getCollection('news')
     const newNews = (await newsCollection?.insertOne({ ...req.body, createdAt: new Date() })).ops[0]

@@ -58,6 +58,23 @@ describe('UserController ingrated tests', () => {
     expect(response.body).toHaveLength(3)
   })
 
+  it('should return a news', async () => {
+    const newsCollection = await Mongo.getCollection('news')
+    const news = (await newsCollection.insertOne({
+      title: 'test title',
+      content: 'test content',
+      authorID: 'testID',
+      image: 'http://test.com/test'
+    })).ops[0]
+
+    const response = await server.get(`/news/${news._id}`)
+    expect(response.status).toBe(200)
+    expect(response.body.title).toEqual(news.title)
+    expect(response.body.content).toEqual(news.content)
+    expect(response.body.authorID).toEqual(news.authorID)
+    expect(response.body.image).toEqual(news.image)
+  })
+
   it('should update news', async () => {
     const newsCollection = await Mongo.getCollection('news')
     const news = (await newsCollection.insertOne({
