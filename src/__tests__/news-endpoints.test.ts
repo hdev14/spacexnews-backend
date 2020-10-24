@@ -239,4 +239,17 @@ describe('UserController ingrated tests', () => {
     expect(response.status).toBe(400)
     expect(response.body.error).toBeTruthy()
   })
+
+  it('on POST:/users should return a slug field', async () => {
+    const data = {
+      title: 'test title',
+      content: 'test content',
+      authorID: 'testID',
+      image: 'http://test.com/test'
+    }
+
+    const response = await server.post('/news').send(data)
+    expect(response.status).toBe(201)
+    expect(response.body.slug).toEqual('test-title')
+  })
 })

@@ -18,8 +18,13 @@ class NewsController {
   }
 
   public async create (req: Request, res: Response) {
+    const data = req.body
     const newsCollection = Mongo.getCollection('news')
-    const newNews = (await newsCollection?.insertOne({ ...req.body, createdAt: new Date() })).ops[0]
+    const newNews = (await newsCollection?.insertOne({
+      ...data,
+      slug: data.title.toLowerCase().split(' ').join('-'),
+      createdAt: new Date()
+    })).ops[0]
 
     return res.status(201).json(newNews)
   }
