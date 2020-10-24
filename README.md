@@ -1,4 +1,16 @@
-<h1 align="center"> Teste Full-Stack JS</h1>
+<h1 align="center"> SpaceX News (Backend)</h1>
+
+# Endpoints
+
+| USERS  	| NEWS  	|
+|---	|---	|
+| ```POST:/users```  	| ```POST:/news```  	|
+| ```GET:/users```  	| ```GET:/news```  	|
+| ```GET:/users/:id```  	| ```GET:/news/:id```  	|
+| ```PUT:/users/:id```  	| ```PUT:/news/:id```  	|
+| ```DELETE:/users/:id``` | ```DELETE:/news/:id``` |
+
+<br/>
 
 # Uso
 
