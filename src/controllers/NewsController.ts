@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { ObjectID } from 'mongodb'
 import Mongo from '../database/Mongo'
+import { getSlug } from '../helpers'
 
 class NewsController {
   public async index (req: Request, res: Response) {
@@ -19,10 +20,11 @@ class NewsController {
 
   public async create (req: Request, res: Response) {
     const data = req.body
+
     const newsCollection = Mongo.getCollection('news')
     const newNews = (await newsCollection?.insertOne({
       ...data,
-      slug: data.title.toLowerCase().split(' ').join('-'),
+      slug: getSlug(data.title),
       createdAt: new Date()
     })).ops[0]
 
@@ -38,7 +40,15 @@ class NewsController {
     }
 
     const newsCollection = Mongo.getCollection('news')
-    const { result } = await newsCollection.updateOne({ _id: new ObjectID(id) }, { $set: data })
+    const { result } = await newsCollection.updateOne(
+      { _id: new ObjectID(id) },
+      {
+        $set: {
+          ...data,
+          slug: data.title ? getSlug(data.title) : data.slug
+        }
+      }
+    )
 
     return result.ok && res.status(200).json()
   }

@@ -252,4 +252,22 @@ describe('UserController ingrated tests', () => {
     expect(response.status).toBe(201)
     expect(response.body.slug).toEqual('test-title')
   })
+
+  it('on PUT:/users when update the title should also update slug field', async () => {
+    const newsCollection = await Mongo.getCollection('news')
+    const news = (await newsCollection.insertOne({
+      title: 'test title',
+      content: 'test content',
+      slug: 'test-title',
+      authorID: 'testID',
+      image: 'http://test.com/test'
+    })).ops[0]
+
+    const data = { title: 'test title update' }
+    const response = await server.put(`/news/${news._id}`).send(data)
+    expect(response.status).toBe(200)
+    expect((
+      await newsCollection.findOne({ _id: news._id })
+    ).slug).toEqual('test-title-update')
+  })
 })
