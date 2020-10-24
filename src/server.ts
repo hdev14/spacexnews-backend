@@ -7,7 +7,7 @@ require('dotenv').config()
 Mongo.connect(process.env.MONGO_URL || '').then(connection => {
   const server = App.server
 
-  const port = process.env.APP_PORT || 3333
+  const port = process.env.PORT || 3333
   server.listen(port, () => {
     console.log(`Server is running! -> http://localhost:${port}`)
   })
