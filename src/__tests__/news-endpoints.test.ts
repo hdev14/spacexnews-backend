@@ -18,7 +18,7 @@ describe('UserController ingrated tests', () => {
     await Mongo.disconnect()
   })
 
-  it('should create an news', async () => {
+  it('should create a news', async () => {
     const data = {
       title: 'test title',
       content: 'test content',
@@ -30,7 +30,7 @@ describe('UserController ingrated tests', () => {
     expect(response.status).toBe(201)
   })
 
-  it('should return a array of news', async () => {
+  it('should return an array of news', async () => {
     const newsCollection = await Mongo.getCollection('news')
     await newsCollection.insertMany([
       {
@@ -103,7 +103,7 @@ describe('UserController ingrated tests', () => {
     expect(response.status).toBe(400)
   })
 
-  it('should delete an news', async () => {
+  it('should delete a news', async () => {
     const newsCollection = await Mongo.getCollection('news')
     const news = (await newsCollection.insertOne({
       title: 'test title',

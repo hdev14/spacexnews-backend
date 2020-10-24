@@ -28,7 +28,7 @@ describe('UserController ingrated tests', () => {
     expect(response.status).toBe(201)
   })
 
-  it('should return a array of users', async () => {
+  it('should return an array of users', async () => {
     const userCollection = await Mongo.getCollection('users')
     await userCollection.insertMany([
       {
