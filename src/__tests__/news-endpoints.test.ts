@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import App from '../App'
 import Mongo from '../database/Mongo'
 
-describe('UserController ingrated tests', () => {
+describe('News intagration tests', () => {
   let server: supertest.SuperTest<supertest.Test>
 
   beforeAll(async () => {
