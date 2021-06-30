@@ -68,7 +68,7 @@ Esse projeto foi todo desenvolvido utilizando a metodologia de desenvolvimento T
 
 ## UI
 
-O Frontend desse projeto foi desenvolvido com ReactJS e ele se encontra nesse repositório: https://github.com/hdev14/teste-hygia-frontend.
+O Frontend desse projeto foi desenvolvido com ReactJS e ele se encontra nesse repositório: https://github.com/hdev14/spacexnews-backend.
 
 
 
